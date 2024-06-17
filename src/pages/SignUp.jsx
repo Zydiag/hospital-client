@@ -36,6 +36,7 @@ export default function SignUp() {
         .regex(/^[a-zA-Z\s]*$/, "Name should only contain letters and spaces"),
       dob: z.string().min(1, "Date of birth is required"),
       password: z.string().min(6, "Password must be at least 6 characters"),
+      specialization: z.string().optional(),
       confirmPassword: z
         .string()
         .min(6, "Confirm password must be at least 6 characters"),
@@ -74,6 +75,7 @@ export default function SignUp() {
   const { signup } = useAuth();
 
   const onSubmit = (data) => {
+    console.log(data);
     signup(data, navigate);
   };
 
