@@ -1,4 +1,4 @@
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   TextField,
   FormControl,
@@ -8,41 +8,44 @@ import {
   Button,
   InputAdornment,
   IconButton,
-} from '@mui/material';
-import { useState } from 'react';
-import { useForm, Controller, useWatch } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+} from "@mui/material";
+import { useState } from "react";
+import { useForm, Controller, useWatch } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import SignUpSideImage from '../assets/login-side-image.jpg';
-import { AccountType } from '../constants';
-import useAuth from '../stores/authStore';
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import SignUpSideImage from "../assets/login-side-image.jpg";
+import { AccountType } from "../constants";
+import useAuth from "../stores/authStore";
 
 export default function SignUp() {
-  // const signUpSchema = z
-  //   .object({
-  //     profession: z.enum([AccountType.Admin, AccountType.Doctor, AccountType.Patient], {
-  //       required_error: 'Account type is required',
-  //     }),
-  //     armyNo: z.string().min(1, 'Army No. is required'),
-  //     name: z
-  //       .string()
-  //       .min(1, 'Name is required')
-  //       .max(50, 'Name must be less than 50 characters')
-  //       .regex(/^[a-zA-Z\s]*$/, 'Name should only contain letters and spaces'),
-  //     dob: z.string().min(1, 'Date of birth is required'),
-  //     password: z.string().min(6, 'Password must be at least 6 characters'),
-  //     confirmPassword: z.string().min(6, 'Confirm password must be at least 6 characters'),
-  //   })
-  //   .refine((data) => data.password === data.confirmPassword, {
-  //     message: "Passwords don't match",
-  //     path: ['confirmPassword'],
-  //   });
+  const signUpSchema = z
+    .object({
+      profession: z.enum(
+        [AccountType.Admin, AccountType.Doctor, AccountType.Patient],
+        {
+          required_error: "Account type is required",
+        },
+      ),
+      armyNo: z.string().min(1, "Army No. is required"),
+      fullName: z
+        .string()
+        .min(1, "Name is required")
+        .max(50, "Name must be less than 50 characters")
+        .regex(/^[a-zA-Z\s]*$/, "Name should only contain letters and spaces"),
+      dob: z.string().min(1, "Date of birth is required"),
+      password: z.string().min(6, "Password must be at least 6 characters"),
+      confirmPassword: z
+        .string()
+        .min(6, "Confirm password must be at least 6 characters"),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: "Passwords don't match",
+      path: ["confirmPassword"],
+    });
 
   const [showPassword, setShowPassword] = useState(false);
-  // const signup = useAuthStore((state) => state.signup);
-  // const error = useAuthStore((state) => state.error);
   const navigate = useNavigate();
 
   const {
@@ -50,19 +53,20 @@ export default function SignUp() {
     control,
     formState: { errors },
   } = useForm({
-    // resolver: zodResolver(signUpSchema),
+    resolver: zodResolver(signUpSchema),
   });
 
   const watchProfession = useWatch({
     control,
-    name: 'profession',
-    defaultValue: '',
+    name: "profession",
+    defaultValue: "",
   });
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
+  const onInvalid = (errors) => console.error(errors);
   const onError = (error) => {
     console.log(error);
   };
@@ -91,12 +95,14 @@ export default function SignUp() {
           <div className="text-white">
             <h1 className="text-4xl md:text-5xl font-semibold">Welcome to </h1>
             <h1 className="text-4xl md:text-5xl font-bold">DHARAM</h1>
-            <p className="text-sm md:text-base">Defence Health Automated Record Management</p>
+            <p className="text-sm md:text-base">
+              Defence Health Automated Record Management
+            </p>
           </div>
           <div className="p-2 md:p-5 bg-gray-600  rounded-md">
             <p className="text-white text-xs md:text-sm">
-              "In this modern era of military healthcare, an advanced solution is crucial to
-              effectively meet the evolving needs of our troops."
+              "In this modern era of military healthcare, an advanced solution
+              is crucial to effectively meet the evolving needs of our troops."
             </p>
           </div>
         </div>
@@ -104,7 +110,10 @@ export default function SignUp() {
           <div className="flex flex-col gap-5 justify-center items-start p-8 max-w-md w-full h-full">
             <h1 className="text-4xl font-bold">Get Started</h1>
             <p className="text-lg">Create your account now</p>
-            <form onSubmit={handleSubmit(onSubmit, onError)} className="w-full">
+            <form
+              onSubmit={handleSubmit(onSubmit, onInvalid)}
+              className="w-full"
+            >
               <FormControl fullWidth margin="normal" size="small">
                 <InputLabel id="account-type-label">Account Type</InputLabel>
                 <Controller
@@ -125,7 +134,9 @@ export default function SignUp() {
                   )}
                 />
                 {errors.profession && (
-                  <span className="text-red-500">{errors.profession.message}</span>
+                  <span className="text-red-500">
+                    {errors.profession.message}
+                  </span>
                 )}
               </FormControl>
               <FormControl fullWidth margin="normal" size="small">
@@ -141,7 +152,7 @@ export default function SignUp() {
                       label="Army No."
                       variant="outlined"
                       error={!!errors.armyNo}
-                      helperText={errors.armyNo ? errors.armyNo.message : ''}
+                      helperText={errors.armyNo ? errors.armyNo.message : ""}
                     />
                   )}
                 />
@@ -158,7 +169,9 @@ export default function SignUp() {
                       variant="outlined"
                       size="small"
                       error={!!errors.fullName}
-                      helperText={errors.fullName ? errors.fullName.message : ''}
+                      helperText={
+                        errors.fullName ? errors.fullName.message : ""
+                      }
                     />
                   )}
                 />
@@ -176,12 +189,12 @@ export default function SignUp() {
                       variant="outlined"
                       size="small"
                       error={!!errors.dob}
-                      helperText={errors.dob ? errors.dob.message : ''}
+                      helperText={errors.dob ? errors.dob.message : ""}
                       InputLabelProps={{
                         shrink: true,
                       }}
                       inputProps={{
-                        max: new Date().toISOString().split('T')[0],
+                        max: new Date().toISOString().split("T")[0],
                       }}
                     />
                   )}
@@ -195,17 +208,26 @@ export default function SignUp() {
                   render={({ field }) => (
                     <TextField
                       {...field}
-                      type={showPassword ? 'text' : 'password'}
+                      type={showPassword ? "text" : "password"}
                       label="Password"
                       variant="outlined"
                       size="small"
                       error={!!errors.password}
-                      helperText={errors.password ? errors.password.message : ''}
+                      helperText={
+                        errors.password ? errors.password.message : ""
+                      }
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">
-                            <IconButton onClick={handleClickShowPassword} edge="end">
-                              {showPassword ? <VisibilityOff /> : <Visibility />}
+                            <IconButton
+                              onClick={handleClickShowPassword}
+                              edge="end"
+                            >
+                              {showPassword ? (
+                                <VisibilityOff />
+                              ) : (
+                                <Visibility />
+                              )}
                             </IconButton>
                           </InputAdornment>
                         ),
@@ -222,17 +244,28 @@ export default function SignUp() {
                   render={({ field }) => (
                     <TextField
                       {...field}
-                      type={showPassword ? 'text' : 'password'}
+                      type={showPassword ? "text" : "password"}
                       label="Confirm Password"
                       variant="outlined"
                       size="small"
                       error={!!errors.confirmPassword}
-                      helperText={errors.confirmPassword ? errors.confirmPassword.message : ''}
+                      helperText={
+                        errors.confirmPassword
+                          ? errors.confirmPassword.message
+                          : ""
+                      }
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">
-                            <IconButton onClick={handleClickShowPassword} edge="end">
-                              {showPassword ? <VisibilityOff /> : <Visibility />}
+                            <IconButton
+                              onClick={handleClickShowPassword}
+                              edge="end"
+                            >
+                              {showPassword ? (
+                                <VisibilityOff />
+                              ) : (
+                                <Visibility />
+                              )}
                             </IconButton>
                           </InputAdornment>
                         ),
@@ -255,23 +288,27 @@ export default function SignUp() {
                         variant="outlined"
                         size="small"
                         error={!!errors.specialization}
-                        helperText={errors.specialization ? errors.specialization.message : ''}
+                        helperText={
+                          errors.specialization
+                            ? errors.specialization.message
+                            : ""
+                        }
                       />
                     )}
                   />
                 </FormControl>
               )}
               <Button
-                onClick={handleSubmit(onSubmit)}
+                onClick={handleSubmit(onSubmit, onInvalid)}
                 type="submit"
                 variant="contained"
                 color="primary"
                 fullWidth
                 style={{
-                  backgroundColor: '#EFB034',
-                  height: '40px',
-                  color: '#ffffff',
-                  margin: '8px 0',
+                  backgroundColor: "#EFB034",
+                  height: "40px",
+                  color: "#ffffff",
+                  margin: "8px 0",
                 }}
               >
                 Sign Up
