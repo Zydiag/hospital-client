@@ -184,7 +184,7 @@ function AddTestData() {
                 />
               </div>
               <div className="piFormGroup md:w-4/5 w-11/12">
-                <label className="piLabel">Urine RE</label>
+                <label className="piLabel">Urine RE/ME</label>
                 <textarea
                   className="piTextarea"
                   name="urineRE"
@@ -259,7 +259,7 @@ function AddTestData() {
                 />
               </div>
               <div className="piFormGroup md:w-4/5 w-11/12">
-                <label className="piLabel">Urine RE</label>
+                <label className="piLabel">Urine RE/ME</label>
                 <textarea
                   className="piTextarea"
                   name="urineRE"
@@ -361,7 +361,7 @@ function AddTestData() {
                 />
               </div>
               <div className="piFormGroup md:w-4/5 w-11/12">
-                <label className="piLabel">Urine RE</label>
+                <label className="piLabel">Urine RE/ME</label>
                 <textarea
                   className="piTextarea"
                   name="urineRE"
