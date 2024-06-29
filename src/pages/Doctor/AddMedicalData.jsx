@@ -432,10 +432,10 @@ function AddMedicalData() {
                 />
               </div>
               <div className="piFormGroup">
-                <label className="piLabel">Units/Service/Arms</label>
+                <label className="piLabel">Unit/Service/Arms</label>
                 <textarea
                   className="piTextarea"
-                  placeholder="Units.."
+                  placeholder="Unit"
                   name="unitServiceArms"
                   value={formData.unitServiceArms}
                   onChange={handleChange}
