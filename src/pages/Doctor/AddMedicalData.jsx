@@ -524,12 +524,22 @@ function AddMedicalData() {
                 />
               </div>
               <div className="piFormGroup">
+                <label className="piLabel">Hip</label>
+                <input
+                  className="piInput"
+                  placeholder="Hip"
+                  name="bloodPressure"
+                  value={formData.bloodPressure}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="piFormGroup">
                 <label className="piLabel">Blood Pressure</label>
                 <input
                   className="piInput"
-                  placeholder="Blood Pressure.."
-                  name="bloodPressure"
-                  value={formData.bloodPressure}
+                  placeholder="Blood Pressure"
+                  name="bloodGroup"
+                  value={formData.bloodGroup}
                   onChange={handleChange}
                 />
               </div>
@@ -537,17 +547,7 @@ function AddMedicalData() {
                 <label className="piLabel">Blood Group</label>
                 <input
                   className="piInput"
-                  placeholder="Blood Group.."
-                  name="bloodGroup"
-                  value={formData.bloodGroup}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="piFormGroup">
-                <label className="piLabel">Allergies</label>
-                <input
-                  className="piInput"
-                  placeholder="Any Allergies.."
+                  placeholder="Blood Group"
                   name="allergies"
                   value={formData.allergies}
                   onChange={handleChange}
@@ -580,7 +580,7 @@ function AddMedicalData() {
         {selectedSection === 'PERSONAL MEDICAL HISTORY' && (
           <section id="medical-history" className="personelInfo">
             <form onSubmit={handleSubmit} className="pi">
-              <h1>PERSONAL MEDICAL HISTORY</h1>
+              <h1>PRESENT CONSULTATION</h1>
               <div className="piFormGroup">
                 <label className="piLabel">Present Complaints</label>
                 <textarea
@@ -602,7 +602,7 @@ function AddMedicalData() {
                 />
               </div>
               <div className="piFormGroup">
-                <label className="piLabel">Experiments and Tests</label>
+                <label className="piLabel">Investigations</label>
                 <textarea
                   className="piTextarea"
                   placeholder="Description.."
