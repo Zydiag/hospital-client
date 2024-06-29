@@ -390,11 +390,11 @@ function AdminSearchPage() {
                 className="text-left font-semibold text-1xl w-full"
                 style={{ fontFamily: "Manrope", marginBottom: "0.5vh" }}
               >
-                Units/Service/Arms
+                Unit/Service/Arms
               </label>
               <input
                 className="patientProfileInput text-left font-medium text-sm w-full"
-                placeholder="Units.."
+                placeholder="Unit"
                 style={{ fontFamily: "Manrope", marginBottom: "0.8vh" }}
                 value={unitsArms}
                 InputProps={{
@@ -411,7 +411,7 @@ function AdminSearchPage() {
               </label>
               <input
                 className="patientProfileInput text-left font-medium text-sm w-full"
-                placeholder="Units.."
+                placeholder="Unit"
                 style={{ fontFamily: "Manrope", marginBottom: "0.8vh" }}
                 value={selectedStatus}
                 InputProps={{

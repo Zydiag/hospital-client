@@ -96,7 +96,7 @@ export default function SignUp() {
           />
           <div className="text-white">
             <h1 className="text-4xl md:text-5xl font-semibold">Welcome to </h1>
-            <h1 className="text-4xl md:text-5xl font-bold">DHARAM</h1>
+            <h1 className="text-4xl md:text-5xl font-bold">DHARM</h1>
             <p className="text-sm md:text-base">
               Defence Health Automated Record Management
             </p>
