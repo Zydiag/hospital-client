@@ -278,7 +278,7 @@ function AddMedicalData() {
           armyNo: patient?.armyNo,
         });
         break;
-      case 'PERSONAL MEDICAL HISTORY':
+      case 'PRESENT CONSULTATION':
         if (!validatePersonalMedicalHistory(formData)) {
           toast('Please fill all fields in Personal Medical History', { type: 'error' });
           return;
