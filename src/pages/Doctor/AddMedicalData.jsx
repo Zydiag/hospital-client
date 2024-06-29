@@ -1,119 +1,119 @@
-import React, { useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import { Button, TextField } from '@mui/material';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import '../../styles/StylesP/AddMedicalData.css';
-import dayjs from 'dayjs';
-import { styled, useTheme } from '@mui/material/styles';
-import MuiDrawer from '@mui/material/Drawer';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import React, { useEffect, useState } from "react";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import { Button, TextField } from "@mui/material";
+import List from "@mui/material/List";
+import Divider from "@mui/material/Divider";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import "../../styles/StylesP/AddMedicalData.css";
+import dayjs from "dayjs";
+import { styled, useTheme } from "@mui/material/styles";
+import MuiDrawer from "@mui/material/Drawer";
+import MuiAppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import {
   useCreatePatientProfile,
   useUpdateFamilyHistory,
   useUpdateHealthRecord,
   useUpdatePatientProfile,
   useUpdateTreatmentRecord,
-} from '../../api/doctor.api';
-import { usePatientStore } from '../../stores/patientStore';
-import useAuth from '../../stores/authStore';
-import { toast } from 'react-toastify';
-import { calculateAge } from '../../utils/getAge.js';
-import { useNavigate } from 'react-router-dom';
+} from "../../api/doctor.api";
+import { usePatientStore } from "../../stores/patientStore";
+import useAuth from "../../stores/authStore";
+import { toast } from "react-toastify";
+import { calculateAge } from "../../utils/getAge.js";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 300;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
-  transition: theme.transitions.create('width', {
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
-  overflowX: 'hidden',
+  overflowX: "hidden",
 });
 
 const closedMixin = (theme) => ({
-  transition: theme.transitions.create('width', {
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  overflowX: 'hidden',
+  overflowX: "hidden",
   width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
 });
 
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
+  shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
+  transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-    boxSizing: 'border-box',
-    ...(open && {
-      ...openedMixin(theme),
-      '& .MuiDrawer-paper': openedMixin(theme),
-    }),
-    ...(!open && {
-      ...closedMixin(theme),
-      '& .MuiDrawer-paper': closedMixin(theme),
-    }),
-  })
-);
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
+  ...(open && {
+    ...openedMixin(theme),
+    "& .MuiDrawer-paper": openedMixin(theme),
+  }),
+  ...(!open && {
+    ...closedMixin(theme),
+    "& .MuiDrawer-paper": closedMixin(theme),
+  }),
+}));
 
 function AddMedicalData() {
   const { patient, setPatient } = usePatientStore();
   const CustomTextField = styled(TextField)({
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: '#a8adb7', // default border color
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "#a8adb7", // default border color
         borderWidth: 2,
       },
-      '&:hover fieldset': {
-        borderColor: '#a8adb7', // border color on hover
+      "&:hover fieldset": {
+        borderColor: "#a8adb7", // border color on hover
         borderWidth: 2,
       },
-      '&.Mui-focused fieldset': {
-        borderColor: 'black', // border color when focused
+      "&.Mui-focused fieldset": {
+        borderColor: "black", // border color when focused
         borderWidth: 2,
       },
     },
@@ -121,52 +121,52 @@ function AddMedicalData() {
   const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
   useEffect(() => {
-    if (!isAuthenticated || (user && user.role !== 'DOCTOR') || !user) {
+    if (!isAuthenticated || (user && user.role !== "DOCTOR") || !user) {
       // console.log('go back you need to login');
-      navigate('/login');
+      navigate("/login");
     }
   }, [isAuthenticated, navigate]);
 
   // const { patient, setPatient } = usePatientStore();
 
   const [formData, setFormData] = useState({
-    BMI: '',
-    height: '',
-    weight: '',
+    BMI: "",
+    height: "",
+    weight: "",
     date: dayjs(),
-    patientName: '',
-    armyNumber: '',
+    patientName: "",
+    armyNumber: "",
     ageService: null,
-    unitServiceArms: '',
-    chest: '',
-    waist: '',
-    bloodPressure: '',
-    bloodGroup: '',
-    disabilities: '',
-    medications: '',
-    diagnosis: '',
-    description: '',
-    allergies: '',
-    miscellaneous: '',
-    hypertension: '',
-    diabetes: '',
-    unnaturalDeath: '',
-    significantHistory: '',
+    unitServiceArms: "",
+    chest: "",
+    waist: "",
+    bloodPressure: "",
+    bloodGroup: "",
+    disabilities: "",
+    medications: "",
+    diagnosis: "",
+    description: "",
+    allergies: "",
+    miscellaneous: "",
+    hypertension: "",
+    diabetes: "",
+    unnaturalDeath: "",
+    significantHistory: "",
   });
 
   useEffect(() => {
     if (patient) {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        armyNumber: patient?.armyNo || '',
-        patientName: patient?.fullname || '',
-        ageService: patient?.dob || '',
-        unitServiceArms: patient?.unit || '',
+        armyNumber: patient?.armyNo || "",
+        patientName: patient?.fullname || "",
+        ageService: patient?.dob || "",
+        unitServiceArms: patient?.unit || "",
       }));
     }
   }, [patient]);
 
-  const [selectedSection, setSelectedSection] = useState('PERSONAL INFO');
+  const [selectedSection, setSelectedSection] = useState("PERSONAL INFO");
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -189,7 +189,12 @@ function AddMedicalData() {
   const { mutate: updateTreatmentRecord } = useUpdateTreatmentRecord();
   const { mutate: updateFamilyHistory } = useUpdateFamilyHistory();
   const validatePersonalInfo = (data) => {
-    const requiredFields = ['patientName', 'armyNumber', 'ageService', 'unitServiceArms'];
+    const requiredFields = [
+      "patientName",
+      "armyNumber",
+      "ageService",
+      "unitServiceArms",
+    ];
     for (const field of requiredFields) {
       if (!data[field]) {
         return false;
@@ -200,14 +205,14 @@ function AddMedicalData() {
 
   const validateHealthRecord = (data) => {
     const requiredFields = [
-      'height',
-      'weight',
-      'chest',
-      'BMI',
-      'waist',
-      'bloodPressure',
-      'bloodGroup',
-      'disabilities',
+      "height",
+      "weight",
+      "chest",
+      "BMI",
+      "waist",
+      "bloodPressure",
+      "bloodGroup",
+      "disabilities",
     ];
     for (const field of requiredFields) {
       if (!data[field]) {
@@ -219,11 +224,11 @@ function AddMedicalData() {
 
   const validatePersonalMedicalHistory = (data) => {
     const requiredFields = [
-      'diagnosis',
-      'description',
-      'medications',
-      'allergies',
-      'miscellaneous',
+      "diagnosis",
+      "description",
+      "medications",
+      "allergies",
+      "miscellaneous",
     ];
     for (const field of requiredFields) {
       if (!data[field]) {
@@ -234,7 +239,12 @@ function AddMedicalData() {
   };
 
   const validateFamilyHistory = (data) => {
-    const requiredFields = ['hypertension', 'diabetes', 'unnaturalDeath', 'significantHistory'];
+    const requiredFields = [
+      "hypertension",
+      "diabetes",
+      "unnaturalDeath",
+      "significantHistory",
+    ];
     for (const field of requiredFields) {
       if (!data[field]) {
         return false;
@@ -247,9 +257,9 @@ function AddMedicalData() {
     event.preventDefault();
 
     switch (selectedSection) {
-      case 'PERSONAL INFO':
+      case "PERSONAL INFO":
         if (!validatePersonalInfo(formData)) {
-          toast('Please fill all fields in Personal Info', { type: 'error' });
+          toast("Please fill all fields in Personal Info", { type: "error" });
           return;
         }
         updatePatientProfile({
@@ -259,9 +269,9 @@ function AddMedicalData() {
           unit: formData.unitServiceArms,
         });
         break;
-      case 'HEALTH RECORD':
+      case "HEALTH RECORD":
         if (!validateHealthRecord(formData)) {
-          toast('Please fill all fields in Health Record', { type: 'error' });
+          toast("Please fill all fields in Health Record", { type: "error" });
           return;
         }
         updateHealthRecord({
@@ -278,9 +288,11 @@ function AddMedicalData() {
           armyNo: patient?.armyNo,
         });
         break;
-      case 'PRESENT CONSULTATION':
+      case "PRESENT CONSULTATION":
         if (!validatePersonalMedicalHistory(formData)) {
-          toast('Please fill all fields in Personal Medical History', { type: 'error' });
+          toast("Please fill all fields in Personal Medical History", {
+            type: "error",
+          });
           return;
         }
         updateTreatmentRecord({
@@ -293,9 +305,9 @@ function AddMedicalData() {
           armyNo: patient?.armyNo,
         });
         break;
-      case 'FAMILY HISTORY':
+      case "FAMILY HISTORY":
         if (!validateFamilyHistory(formData)) {
-          toast('Please fill all fields in Family History', { type: 'error' });
+          toast("Please fill all fields in Family History", { type: "error" });
           return;
         }
         updateFamilyHistory({
@@ -308,7 +320,7 @@ function AddMedicalData() {
         });
         break;
       default:
-        throw new Error('Invalid section');
+        throw new Error("Invalid section");
     }
   };
 
@@ -321,7 +333,12 @@ function AddMedicalData() {
     });
   };
 
-  const sections = ['PERSONAL INFO', 'HEALTH RECORD', 'PERSONAL MEDICAL HISTORY', 'FAMILY HISTORY'];
+  const sections = [
+    "PERSONAL INFO",
+    "HEALTH RECORD",
+    "PRESENT CONSULTATION",
+    "FAMILY HISTORY",
+  ];
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -336,13 +353,17 @@ function AddMedicalData() {
 
   return (
     <div>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <AppBar position="fixed" open={open} sx={{ backgroundColor: '#efb034' }}>
+        <AppBar
+          position="fixed"
+          open={open}
+          sx={{ backgroundColor: "#efb034" }}
+        >
           <Toolbar
             sx={{
-              '& .MuiToolbar-regular': {
-                backgroundColor: '#e99a01',
+              "& .MuiToolbar-regular": {
+                backgroundColor: "#e99a01",
               },
             }}
           >
@@ -353,7 +374,7 @@ function AddMedicalData() {
               edge="start"
               sx={{
                 marginRight: 5,
-                ...(open && { display: 'none' }),
+                ...(open && { display: "none" }),
               }}
             >
               <MenuIcon />
@@ -363,20 +384,26 @@ function AddMedicalData() {
         <Drawer variant="permanent" open={open}>
           <DrawerHeader>
             <IconButton onClick={handleDrawerClose}>
-              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+              {theme.direction === "rtl" ? (
+                <ChevronRightIcon />
+              ) : (
+                <ChevronLeftIcon />
+              )}
             </IconButton>
           </DrawerHeader>
           <Divider />
           <List>
             {sections.map((text, index) => (
-              <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+              <ListItem key={text} disablePadding sx={{ display: "block" }}>
                 <ListItemButton
-                  onClick={() => setSelectedSection(text)}
+                  onClick={() => {
+                    setSelectedSection(text);
+                  }}
                   sx={{
                     minHeight: 48,
-                    justifyContent: open ? 'initial' : 'center',
+                    justifyContent: open ? "initial" : "center",
                     px: 2.5,
-                    textAlign: 'center',
+                    textAlign: "center",
                   }}
                 >
                   <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
@@ -385,13 +412,20 @@ function AddMedicalData() {
             ))}
           </List>
         </Drawer>
-        {selectedSection === 'PERSONAL INFO' && (
+        {selectedSection === "PERSONAL INFO" && (
           <div id="personal-info" className="personelInfo">
             <form onSubmit={handleSubmit} className="pi">
               <h1>PERSONAL INFO</h1>
-              <div className="piFormGroup" style={{ marginBottom: '1vh', textAlign: 'right' }}>
+              <div
+                className="piFormGroup"
+                style={{ marginBottom: "1vh", textAlign: "right" }}
+              >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker label="Date" value={formData.date} onChange={handleDateChange} />
+                  <DatePicker
+                    label="Date"
+                    value={formData.date}
+                    onChange={handleDateChange}
+                  />
                 </LocalizationProvider>
               </div>
               <div className="piFormGroup">
@@ -420,7 +454,11 @@ function AddMedicalData() {
                   label="Date of Birth"
                   type="date"
                   name="ageService"
-                  value={patient?.dob ? new Date(patient?.dob).toISOString().split('T')[0] : ''}
+                  value={
+                    patient?.dob
+                      ? new Date(patient?.dob).toISOString().split("T")[0]
+                      : ""
+                  }
                   onChange={handleChange}
                   className="piInput"
                   InputLabelProps={{
@@ -428,7 +466,7 @@ function AddMedicalData() {
                   }}
                   fullWidth
                   margin="normal"
-                  inputProps={{ max: new Date().toISOString().split('T')[0] }}
+                  inputProps={{ max: new Date().toISOString().split("T")[0] }}
                 />
               </div>
               <div className="piFormGroup">
@@ -455,7 +493,7 @@ function AddMedicalData() {
           </div>
         )}
 
-        {selectedSection === 'HEALTH RECORD' && (
+        {selectedSection === "HEALTH RECORD" && (
           <section id="health-record" className="personelInfo">
             <form onSubmit={handleSubmit} className="pi">
               <h1>HEALTH RECORD</h1>
@@ -491,7 +529,11 @@ function AddMedicalData() {
               <div className="piFormGroup">
                 <label className="piLabel">BMI</label>
                 <div className="piInputContainer flex-intial flex-row justify-start">
-                  <input className="piInput lg:w-full w-4/5 " value={formData.BMI} readOnly />
+                  <input
+                    className="piInput lg:w-full w-4/5 "
+                    value={formData.BMI}
+                    readOnly
+                  />
                   <Button
                     variant="contained"
                     className="calc text-sm lg:text-base lg:w-full w-1/5"
@@ -528,8 +570,8 @@ function AddMedicalData() {
                 <input
                   className="piInput"
                   placeholder="Hip"
-                  name="bloodPressure"
-                  value={formData.bloodPressure}
+                  name="bloodGroup"
+                  value={formData.bloodGroup}
                   onChange={handleChange}
                 />
               </div>
@@ -538,8 +580,8 @@ function AddMedicalData() {
                 <input
                   className="piInput"
                   placeholder="Blood Pressure"
-                  name="bloodGroup"
-                  value={formData.bloodGroup}
+                  name="bloodPressure"
+                  value={formData.bloodPressure}
                   onChange={handleChange}
                 />
               </div>
@@ -577,7 +619,7 @@ function AddMedicalData() {
           </section>
         )}
 
-        {selectedSection === 'PERSONAL MEDICAL HISTORY' && (
+        {selectedSection === "PRESENT CONSULTATION" && (
           <section id="medical-history" className="personelInfo">
             <form onSubmit={handleSubmit} className="pi">
               <h1>PRESENT CONSULTATION</h1>
@@ -645,7 +687,7 @@ function AddMedicalData() {
           </section>
         )}
 
-        {selectedSection === 'FAMILY HISTORY' && (
+        {selectedSection === "FAMILY HISTORY" && (
           <section id="Family-history" className="personelInfo">
             <form onSubmit={handleSubmit} className="pi">
               <h1>FAMILY HISTORY</h1>
@@ -680,7 +722,10 @@ function AddMedicalData() {
                 />
               </div>
               <div className="piFormGroup">
-                <label className="piLabel"> Any Other Significant History</label>
+                <label className="piLabel">
+                  {" "}
+                  Any Other Significant History
+                </label>
                 <textarea
                   className="piTextarea"
                   placeholder="Any Other Significant History.."

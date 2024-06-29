@@ -75,7 +75,6 @@ export default function SignUp() {
   const { signup } = useAuth();
 
   const onSubmit = (data) => {
-    console.log(data);
     signup(data, navigate);
   };
 

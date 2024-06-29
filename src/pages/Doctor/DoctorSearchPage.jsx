@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
-import Navbar from '../../components/Navbar';
-import RowPatient from '../../components/RowPatient';
-import SearchBar from '../../components/SearchBar';
-import { AccountType } from '../../constants';
+import React, { useEffect, useState, useRef } from "react";
+import Navbar from "../../components/Navbar";
+import RowPatient from "../../components/RowPatient";
+import SearchBar from "../../components/SearchBar";
+import { AccountType } from "../../constants";
 import {
   Dialog,
   DialogContent,
@@ -12,31 +12,33 @@ import {
   Button,
   FormControl,
   dividerClasses,
-} from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import '../../styles/StylesP/DoctorSearchPage.css';
-import useAuth from '../../stores/authStore';
-import { useNavigate } from 'react-router-dom';
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import "../../styles/StylesP/DoctorSearchPage.css";
+import useAuth from "../../stores/authStore";
+import { useNavigate } from "react-router-dom";
 import {
   getPersonalInfoApi,
   useCreatePatientProfile,
   useGetPersonalInfo,
-} from '../../api/doctor.api';
-import { z } from 'zod';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { splitFullName } from '../../api/signUpService';
-import { usePatientStore } from '../../stores/patientStore';
+} from "../../api/doctor.api";
+import { z } from "zod";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { splitFullName } from "../../api/signUpService";
+import { usePatientStore } from "../../stores/patientStore";
 
 const patientProfileSchema = z.object({
   name: z
     .string()
-    .min(1, 'Name is required')
-    .max(50, 'Name must be less than 50 characters')
-    .regex(/^[a-zA-Z\s]*$/, 'Name should only contain letters and spaces'),
-  armyNo: z.string().min(1, { message: 'Army Number is required' }),
-  dob: z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date format' }),
-  unit: z.string().min(1, { message: 'Unit is required' }),
+    .min(1, "Name is required")
+    .max(50, "Name must be less than 50 characters")
+    .regex(/^[a-zA-Z\s]*$/, "Name should only contain letters and spaces"),
+  armyNo: z.string().min(1, { message: "Army Number is required" }),
+  dob: z.string().refine((val) => !isNaN(Date.parse(val)), {
+    message: "Invalid date format",
+  }),
+  unit: z.string().min(1, { message: "Unit is required" }),
 });
 
 function PatientSearchPage() {
@@ -47,9 +49,9 @@ function PatientSearchPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!isAuthenticated || (user && user.role !== 'DOCTOR') || !user) {
+    if (!isAuthenticated || (user && user.role !== "DOCTOR") || !user) {
       // console.log('go back you need to login');
-      navigate('/login');
+      navigate("/login");
     } else {
       setLoading(false);
     }
@@ -75,7 +77,6 @@ function PatientSearchPage() {
 
   const handleCreatePatient = async (data) => {
     const { name, armyNo, dob, unit } = data;
-    // const { firstName, middleName, lastName } = splitFullName(name);
 
     const formData = {
       ...data,
@@ -88,9 +89,9 @@ function PatientSearchPage() {
       setPatient(formData);
       reset();
       setOpen(false);
-      navigate('/doctor/patient-record');
+      navigate("/doctor/patient-record");
     } catch (error) {
-      console.error('Error creating patient profile:', error);
+      console.error("Error creating patient profile:", error);
     }
   };
 
@@ -100,14 +101,8 @@ function PatientSearchPage() {
 
   const accountType = AccountType.Doctor;
 
-  // const patientData = [
-  //   { armyNumber: 'ARMY001', patientName: 'Dr. Alice' },
-  //   { armyNumber: 'ARMY002', patientName: 'Dr. Bob' },
-  //   { armyNumber: 'ARMY003', patientName: 'Dr. Charlie' },
-  // ];
-
-  const [searchValuePatient, setSearchValuePatient] = useState('');
-  const [errorMessagePatient, setErrorMessagePatient] = useState('');
+  const [searchValuePatient, setSearchValuePatient] = useState("");
+  const [errorMessagePatient, setErrorMessagePatient] = useState("");
   const [selectedRowPatient, setSelectedRowPatient] = useState(null);
 
   const handleSearchChange = (event) => {
@@ -118,36 +113,40 @@ function PatientSearchPage() {
   // console.log('data', data);
   // console.log('isError', isError);
   // console.log('error', error);
-  // useEffect(() => {
-  //   // setErrorMessagePatient('');
-  // }, [searchValuePatient]);
+
+  useEffect(() => {
+    setErrorMessagePatient("");
+  }, [searchValuePatient]);
+
   const { makeAuthRequest } = useAuth();
   // const {patient, setPatient} = usePatientStore();
 
   const handleSearch = async () => {
-    setSearchValuePatient('');
+    setSearchValuePatient("");
     if (!searchValuePatient) {
-      setErrorMessagePatient('Search Input is empty.');
-      // console.log('Error: Input is empty'); // Add this line to debug
+      setErrorMessagePatient("Search Input is empty.");
     } else {
-      const data = await getPersonalInfoApi(makeAuthRequest, searchValuePatient);
-      setPatient(data);
-      if (data) {
+      try {
+        const data = await getPersonalInfoApi(
+          makeAuthRequest,
+          searchValuePatient,
+        );
+        setPatient(data);
         setSelectedRowPatient(data);
-        setErrorMessagePatient('');
-      } else {
+        setErrorMessagePatient("");
+      } catch (error) {
         setSelectedRowPatient(null);
-        setErrorMessagePatient('User not found');
+        setErrorMessagePatient("User not found");
       }
     }
   };
   const patientSearchRef = useRef(null);
   useEffect(() => {
     if (selectedRowPatient) {
-      patientSearchRef.current.scrollIntoView({ behavior: 'smooth' });
+      patientSearchRef.current.scrollIntoView({ behavior: "smooth" });
       // Add the show class after scrolling into view
       setTimeout(() => {
-        patientSearchRef.current.classList.add('show');
+        patientSearchRef.current.classList.add("show");
       }, 200); // Adjust timeout as needed
     }
   }, [selectedRowPatient]);
@@ -162,8 +161,8 @@ function PatientSearchPage() {
         <>
           <Navbar accountType={accountType} />
           <div
-            className="bg-tertiary py-10 flex flex-col gap-10 justify-center "
-            style={{ height: '50vh' }}
+            className="bg-tertiary py-10 flex flex-col gap-10 justify-center relative"
+            style={{ height: "50vh" }}
           >
             <SearchBar
               placeholder="Search Patient by Army no."
@@ -171,7 +170,11 @@ function PatientSearchPage() {
               onChange={handleSearchChange}
               value={searchValuePatient}
             />
-            {errorMessagePatient && <p className="searchError">{errorMessagePatient}</p>}
+            {errorMessagePatient && (
+              <p className="searchError  text-red-800 text-center">
+                {errorMessagePatient}
+              </p>
+            )}
             <div className="flex flex-col-reverse justify-center items-center gap-5">
               <p className="md:text-lg text-base">
                 Couldn't find the user? Create a New patient Record.
@@ -182,9 +185,9 @@ function PatientSearchPage() {
                 className="h-full md:text-2xl text-xl"
                 onClick={() => setOpen(true)}
                 style={{
-                  padding: '15px 32px',
-                  backgroundColor: '#E99B00',
-                  color: '#ffffff',
+                  padding: "15px 32px",
+                  backgroundColor: "#E99B00",
+                  color: "#ffffff",
                 }}
               >
                 Create Patient Profile
@@ -193,14 +196,18 @@ function PatientSearchPage() {
           </div>
 
           {selectedRowPatient && (
-            <div className="searchRow" id="patientSearch" ref={patientSearchRef}>
+            <div
+              className="searchRow"
+              id="patientSearch"
+              ref={patientSearchRef}
+            >
               <p
                 className="text-left text-3xl font-semibold searchPara"
                 style={{
-                  width: '85%',
-                  marginLeft: '8vw',
-                  paddingBottom: '3vh',
-                  paddingTop: '8vh',
+                  width: "85%",
+                  marginLeft: "8vw",
+                  paddingBottom: "3vh",
+                  paddingTop: "8vh",
                 }}
               >
                 Look, What we found?
@@ -210,13 +217,13 @@ function PatientSearchPage() {
                 armyNumber={selectedRowPatient.armyNo}
                 patientName={selectedRowPatient.fullname}
                 button1="View Patient History"
-                handleClick={() => navigate('/doctor/patient-record')}
+                handleClick={() => navigate("/doctor/patient-record")}
                 sx={{
-                  '& .MuiPaper-root': {
-                    maxWidth: '90%', // Maximum width of the dialog paper element
-                    maxHeight: '80vh', // Maximum height of the dialog paper element
-                    width: '40vw', // Adjust width as necessary
-                    height: '80vh', // Adjust height as necessary
+                  "& .MuiPaper-root": {
+                    maxWidth: "90%", // Maximum width of the dialog paper element
+                    maxHeight: "80vh", // Maximum height of the dialog paper element
+                    width: "40vw", // Adjust width as necessary
+                    height: "80vh", // Adjust height as necessary
                     // width: '100vh', // Adjust width as necessary
                     // height: '80%', // Adjust height as necessary
                   },
@@ -230,11 +237,11 @@ function PatientSearchPage() {
             aria-labelledby="customized-dialog-title"
             open={open}
             sx={{
-              '& .MuiPaper-root': {
-                maxWidth: '90%',
-                maxHeight: '80vh',
-                width: '100vh',
-                height: '80%',
+              "& .MuiPaper-root": {
+                maxWidth: "90%",
+                maxHeight: "80vh",
+                width: "100vh",
+                height: "80%",
               },
             }}
           >
@@ -242,7 +249,7 @@ function PatientSearchPage() {
               aria-label="close"
               onClick={handleClose}
               sx={{
-                position: 'absolute',
+                position: "absolute",
                 right: 8,
                 top: 8,
                 color: (theme) => theme.palette.grey[500],
@@ -253,10 +260,10 @@ function PatientSearchPage() {
             <DialogContent
               dividers
               sx={{
-                display: 'flex',
-                flexDirection: 'column',
+                display: "flex",
+                flexDirection: "column",
                 gap: 3,
-                marginTop: '20px',
+                marginTop: "20px",
               }}
             >
               <form
@@ -275,7 +282,9 @@ function PatientSearchPage() {
                         label="Full Name"
                         variant="outlined"
                         error={!!errors.doctorName}
-                        helperText={errors.doctorName ? errors.doctorName.message : ''}
+                        helperText={
+                          errors.doctorName ? errors.doctorName.message : ""
+                        }
                         fullWidth
                         margin="normal"
                       />
@@ -291,7 +300,9 @@ function PatientSearchPage() {
                         label="Army Number"
                         variant="outlined"
                         error={!!errors.armyNumber}
-                        helperText={errors.armyNumber ? errors.armyNumber.message : ''}
+                        helperText={
+                          errors.armyNumber ? errors.armyNumber.message : ""
+                        }
                         fullWidth
                         margin="normal"
                       />
@@ -308,13 +319,15 @@ function PatientSearchPage() {
                         type="date"
                         variant="outlined"
                         error={!!errors.dob}
-                        helperText={errors.dob ? errors.dob.message : ''}
+                        helperText={errors.dob ? errors.dob.message : ""}
                         InputLabelProps={{
                           shrink: true,
                         }}
                         fullWidth
                         margin="normal"
-                        inputProps={{ max: new Date().toISOString().split('T')[0] }}
+                        inputProps={{
+                          max: new Date().toISOString().split("T")[0],
+                        }}
                       />
                     )}
                   />
@@ -328,7 +341,7 @@ function PatientSearchPage() {
                         label="Unit"
                         variant="outlined"
                         error={!!errors.units}
-                        helperText={errors.units ? errors.units.message : ''}
+                        helperText={errors.units ? errors.units.message : ""}
                         fullWidth
                         margin="normal"
                       />
@@ -343,13 +356,13 @@ function PatientSearchPage() {
                     onClick={handleSubmit(handleCreatePatient, onInvalid)}
                     autoFocus
                     style={{
-                      padding: '8px',
-                      width: '20%',
-                      backgroundColor: '#efb034',
-                      color: 'white',
-                      marginLeft: 'auto',
-                      marginRight: 'auto',
-                      border: 'none',
+                      padding: "8px",
+                      width: "20%",
+                      backgroundColor: "#efb034",
+                      color: "white",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      border: "none",
                     }}
                   >
                     Create
