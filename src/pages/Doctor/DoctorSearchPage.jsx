@@ -325,7 +325,7 @@ function PatientSearchPage() {
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        label="Units"
+                        label="Unit"
                         variant="outlined"
                         error={!!errors.units}
                         helperText={errors.units ? errors.units.message : ''}
