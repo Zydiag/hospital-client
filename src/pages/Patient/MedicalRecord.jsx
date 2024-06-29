@@ -51,20 +51,37 @@ function MedicalRecord() {
           ...personalInfoResponse,
           dob: formattedDOB,
         };
-        const formattedHealthRecord = {
-          ...healthRecordResponse.data,
-          createdAt: new Date(healthRecordResponse?.data?.createdAt).toISOString().split('T')[0], // Format to YYYY-MM-DD
-          doctorName: healthRecordResponse?.data?.doctor?.user?.fullname, // Extract the doctor's full name
-        };
+        // const formattedHealthRecord = {
+        //   ...healthRecordResponse.data,
+        //   createdAt: new Date(healthRecordResponse?.data?.createdAt).toISOString().split('T')[0], // Format to YYYY-MM-DD
+        //   doctorName: healthRecordResponse?.data?.doctor?.user?.fullname, // Extract the doctor's full name
+        // };
 
         const formattedTreatmentRecordResponse = {
           'Present Complaints': treatmentRecordResponse?.data?.info?.medicationName,
-          'Experiments and Tests': treatmentRecordResponse?.data?.info?.note,
+          'Investigations': treatmentRecordResponse?.data?.info?.note,
           Diagnosis: treatmentRecordResponse?.data?.info?.diagnosis,
           'Known Allergies': treatmentRecordResponse?.data?.info?.knownAllergies,
           'Treatment Advice': treatmentRecordResponse?.data?.info?.miscellaneous,
           // createdAt: new Date(treatmentRecordResponse?.data?.createdAt).toISOString().split('T')[0], // Format to YYYY-MM-DD
         };
+        const formattedHealthRecord = {
+					'Height(cm)': healthRecordResponse?.data?.heightCm,
+					'Weight(kg)': healthRecordResponse?.data?.weightKg,
+					'BMI': healthRecordResponse?.data?.BMI,
+					'Chest': healthRecordResponse?.data?.chest,
+					'Waist': healthRecordResponse?.data?.waist,
+					'Blood Pressure': healthRecordResponse?.data?.bloodPressure,
+					'Disablities': healthRecordResponse?.data?.disabilities,
+					'Blood Group': healthRecordResponse?.data?.allergies,
+					'Hip': healthRecordResponse?.data?.bloodGroup,
+          // ...healthRecordResponse.data,
+					// 'waist': healthRecordResponse?.data?.waist,
+					// 'waist': healthRecordResponse?.data?.waist,
+          createdAt: new Date(healthRecordResponse?.data?.createdAt).toISOString().split('T')[0], // Format to YYYY-MM-DD
+          doctorName: healthRecordResponse?.data?.doctor?.user?.fullname, // Extract the doctor's full name
+        };
+
         const formattedFamilyHistory = {
           ...familyHistoryResponse.data,
           createdAt: new Date(familyHistoryResponse?.data?.createdAt).toISOString().split('T')[0], // Format to YYYY-MM-DD
