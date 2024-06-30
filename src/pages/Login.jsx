@@ -13,7 +13,7 @@ import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import LoginSideImage from "../assets/login-side-image.jpg";
+import LoginSideImage from "../assets/army.jpg";
 import { AccountType } from "../constants";
 import useAuth from "../stores/authStore";
 import { useNavigate } from "react-router-dom";
