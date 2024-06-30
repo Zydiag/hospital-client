@@ -627,7 +627,7 @@ function AddMedicalData() {
                 <label className="piLabel">Present Complaints</label>
                 <textarea
                   className="piTextarea"
-                  placeholder="Present medications.."
+                  placeholder="Present Complaints"
                   name="medications"
                   value={formData.medications}
                   onChange={handleChange}
@@ -637,7 +637,7 @@ function AddMedicalData() {
                 <label className="piLabel">Diagnosis</label>
                 <textarea
                   className="piTextarea"
-                  placeholder="Diagnosis.."
+                  placeholder="Diagnosis"
                   name="diagnosis"
                   value={formData.diagnosis}
                   onChange={handleChange}
@@ -647,7 +647,7 @@ function AddMedicalData() {
                 <label className="piLabel">Investigations</label>
                 <textarea
                   className="piTextarea"
-                  placeholder="Description.."
+                  placeholder="Investigations"
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
@@ -667,7 +667,7 @@ function AddMedicalData() {
                 <label className="piLabel">Treatment Advice</label>
                 <textarea
                   className="piTextarea"
-                  placeholder="Miscellaneous.."
+                  placeholder="Treatment Advice"
                   name="miscellaneous"
                   value={formData.miscellaneous}
                   onChange={handleChange}

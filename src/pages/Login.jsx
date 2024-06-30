@@ -13,7 +13,7 @@ import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import LoginSideImage from "../assets/login-side-image.jpg";
+import LoginSideImage from "../assets/army.jpg";
 import { AccountType } from "../constants";
 import useAuth from "../stores/authStore";
 import { useNavigate } from "react-router-dom";
@@ -111,7 +111,7 @@ export default function Login() {
           />
           <div className="text-white">
             <h1 className="text-4xl md:text-5xl font-semibold">Welcome to </h1>
-            <h1 className="text-4xl md:text-5xl font-bold">DHARAM</h1>
+            <h1 className="text-4xl md:text-5xl font-bold">DHARM</h1>
             <p className="text-sm md:text-base">
               Defence Health Automated Record Management
             </p>
