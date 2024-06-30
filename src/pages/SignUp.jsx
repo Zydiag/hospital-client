@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import SignUpSideImage from "../assets/login-side-image.jpg";
+import SignUpSideImage from "../assets/army.jpg";
 import { AccountType } from "../constants";
 import useAuth from "../stores/authStore";
 
